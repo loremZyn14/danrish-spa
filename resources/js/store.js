@@ -1,6 +1,9 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import { getAllCategory } from './services/categories'
+import { all } from './services/Products'
 import { getLocalUser } from "./services/auth";
+
 Vue.use(Vuex);
 const  user = getLocalUser()
 
@@ -90,7 +93,7 @@ export default new Vuex.Store({
                         break;
                     }
                 }
-                console.log(isProduct)
+                // console.log(isProduct)
                 if(!isProduct){
                     state.purchaseProducts.push(product)
                 }
@@ -122,7 +125,30 @@ export default new Vuex.Store({
         removeCartItem(state,product){
            let index =  state.cartProducts.indexOf(product);
            state.cartProducts.splice(index,1);
-        }
+        },
+        getProducts(state){
+            all()
+            .then((response)=>{
+                response.data.forEach(product => {
+                    product.qty = 1
+                    product.subTotal = product.price
+                });
+                state.products = response.data
+                // console.log(response.data);
+            })
+            .catch((error)=>{
+                alert('Something went wrong!')
+            })
+        },
+        getAllCategory(state){
+            getAllCategory()
+            .then((response)=>{
+                state.categories = response.data
+            })
+            .catch((error)=>{
+                alert('Something went wrong!')
+            })
+        },
 
     },
 

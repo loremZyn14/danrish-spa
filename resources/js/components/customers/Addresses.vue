@@ -3,7 +3,7 @@
     <v-container>
       <v-row>
         <v-col lg="10" offset="1">
-          <h4 class="text-h4 mb-4">Addresses</h4>
+          <h5 class="text-h5 mb-4">Addresses</h5>
           <v-divider></v-divider>
         </v-col>
         <v-col lg="10" offset="1">

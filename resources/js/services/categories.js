@@ -1,10 +1,12 @@
+
+
 import axios from 'axios'
 
 // Get all products from the database
 
-export function all() {
+export function getAllCategory() {
     return new Promise((resolve, reject) => {
-        axios.get('/api/products')
+        axios.get('/api/categories')
             .then((response) => {
                 resolve(response);
             })
@@ -15,7 +17,7 @@ export function all() {
 }
 // Get a one product from database by id
 
-export function getProductById(id) {
+export function getCategoryById(id) {
     return new Promise((resolve, reject) => {
         axios.get(`/api/products/${id}`)
             .then((response) => {
@@ -27,15 +29,12 @@ export function getProductById(id) {
     })
 }
 // Add one product to the database
-export function addProduct(product) {
+export function addCategory(category) {
     return new Promise((resolve, reject) => {
         axios.post('/api/products', {
-            name: product.name,
-            brand: product.brand,
-            stocks: product.stocks,
-            price: product.price,
-            unit: product.unit,
-            categoryId: product.categoryId
+            name: category.name,
+            description: category.description,
+            alt_img : category.alt_img
         }).then((response) => {
             resolve(response);
         }).catch((error) => {

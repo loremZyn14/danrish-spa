@@ -1,8 +1,10 @@
 <template>
   <v-container class="my-8">
     <v-data-iterator
-      loading
-      loading-text="Getting data"
+      no-data-text="No products available."
+      no-results-text="Products are not available."
+      :loading="$store.getters.products.length == 0 ? true: false"
+      loading-text="Getting all products. please wait a moment..."
       :items="filterProducts"
       :search="search"
       hide-default-footer
@@ -22,12 +24,8 @@
         </v-toolbar>
         <v-container>
           <h4 class="d-inline mr-8">Categoires</h4>
-          <v-chip outlined @click="filter('all')">all</v-chip>
-          <v-chip outlined @click="filter('tool')">tools</v-chip>
-          <v-chip outlined @click="filter('equipment')">equipment</v-chip>
-          <v-chip outlined @click="filter('accessories')">accessories</v-chip>
-          <v-chip outlined @click="filter('laptop')">laptops</v-chip>
-          <v-chip outlined @click="filter('keyboard')">keyboard</v-chip>
+          <v-chip outlined @click="currentCategory = 'all'">all</v-chip>
+          <v-chip outlined @click="currentCategory = category.name" v-for="(category ,i) in $store.getters.categories" :key="i" v-text="category.name"></v-chip>
         </v-container>
       </template>
       <template v-slot:default="props">
@@ -36,21 +34,19 @@
             <v-card outlined max-width="400" light>
               <v-img
                 class="white--text align-end"
-                :src="product.link"
+                src="/assets/img/default.png"
                 height="150px"
               >
                 <v-card-title class="text-subtitle pa-0 blur">
                   <router-link
                     :to="'/products/' + product.id"
                     class="not-link text-truncate pa-4"
-                    >{{ product.name }}</router-link
+                    >{{ product.name }} {{product.category.name}}</router-link
                   >
                 </v-card-title>
               </v-img>
               <v-card-text>
-                Price : &#x20B1; {{ product.price }}.00 <br />Stocks : 10 pcs
-                <br />
-                <b>Free Shipping</b>
+                Price : &#x20B1; {{ product.price }}.00 <br />Stocks : {{ product.stocks + ' ' + product.unit }}
               </v-card-text>
             </v-card>
           </v-col>
@@ -66,26 +62,20 @@ export default {
     return {
       search: "",
       products: [],
+      currentCategory : "all"
     };
-  },
-  methods: {
-    filter(category) {
-      this.products = this.$store.getters.products;
-      if (!(category == "all")) {
-        this.products = this.products.filter(
-          (product) => product.category.name == category
-        );
-      }
-    },
   },
   computed: {
     filterProducts() {
-      if (!this.products.lenght) {
-        this.products = this.$store.getters.products;
+      if (this.currentCategory == "all"){
+         return this.$store.getters.products
       }
-      return this.products;
+      return  this.$store.getters.products.filter(
+        (product) => product.category.name === this.currentCategory
+      );
     },
   },
+
 
 };
 </script>

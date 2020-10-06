@@ -3,7 +3,7 @@
     <v-container>
       <v-row>
         <v-col lg="10" offset="1">
-          <h4 class="text-h4 font-weight-thin mb-4">Set Password</h4>
+          <h5 class="text-h5 font-weight-thin mb-4">Set Password</h5>
           <v-divider></v-divider>
         </v-col>
         <v-col lg="6" offset-lg="3"  class="text-right">

@@ -45,7 +45,7 @@
           </v-col>
           <v-col></v-col>
         </v-row>
-        <h5 class="blue--text">742 pcs available</h5>
+        <h5 class="blue--text">{{ product.stocks + ' ' + product.unit }} available</h5>
         <div class="mt-4 w-100">
           <v-spacer></v-spacer>
           <v-btn color="primary" tile text outlined x-large @click="addToCart()">
@@ -138,7 +138,7 @@ export default {
       );
     },
     discounted() {
-      return Math.round(this.product.price * 0.2 * 100) / 100;
+      return this.product.price - Math.round(this.product.price * 0.2 * 100) / 100;
     },
   },
 };

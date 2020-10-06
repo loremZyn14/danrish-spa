@@ -9,9 +9,9 @@
         <v-row >
             <v-col lg="10" offset-lg="1" >
                 <v-row>
-                    <v-col lg="4" v-for="item in items" :key="item.id">
+                    <v-col >
                         <v-sheet elevation="10" >
-                            <v-card>
+                            <!-- <v-card>
                                 <v-card-title class="subtitle-1 ">
                                     <v-icon left >{{ item.icon }}</v-icon>
                                     <span class="text-truncate">{{ item.text}}</span>
@@ -30,7 +30,8 @@
                                     <v-spacer></v-spacer>
                                     <v-btn color="primary" text>View Details</v-btn>
                                 </v-card-actions>
-                            </v-card>
+                            </v-card> -->
+                            <h1 class="ma-16 pa-16 text-center">Comming Soon :)</h1>
                         </v-sheet>
                     </v-col>
                 </v-row>

@@ -1,24 +1,37 @@
 <template>
   <v-card flat class="pa-8">
-      <v-sheet class="mb-3">
-          <v-row align="end">
-              <v-col>
-                  <h2>Products</h2>
-              </v-col>
-              <v-col>
-                  <v-tabs right>
-            <v-tab v-for="(tab,i) in tabs" :key="i" v-text="tab"></v-tab>
-        </v-tabs>
-              </v-col>
-          </v-row>
-      </v-sheet>
-    <v-data-table :headers="headers" :items="desserts" :search="search" sort-by="calories" class="elevation-1">
+    <v-sheet class="mb-3">
+      <v-row align="end">
+        <v-col>
+          <h2>Products</h2>
+        </v-col>
+        <v-col>
+          <v-tabs right>
+            <v-tab v-for="(tab, i) in tabs" :key="i" v-text="tab"></v-tab>
+          </v-tabs>
+        </v-col>
+      </v-row>
+    </v-sheet>
+    <v-data-table
+      :headers="headers"
+      :items="desserts"
+      :search="search"
+      sort-by="calories"
+      class="elevation-1"
+    >
       <template v-slot:top>
-        <v-toolbar flat color=" text--white" >
-            <v-btn color="text--white" text outlined  class="my-2"  :to="{path:'/admin/products/addproduct'}" link>
-                Add Product
-                <v-icon>mdi-plus</v-icon>
-              </v-btn>
+        <v-toolbar flat color=" text--white">
+          <v-btn
+            color="text--white"
+            text
+            outlined
+            class="my-2"
+            :to="{ path: '/admin/products/addproduct' }"
+            link
+          >
+            Add Product
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
 
           <v-spacer></v-spacer>
           <v-text-field
@@ -28,8 +41,7 @@
             single-line
             hide-details
             color="text-white"
-        ></v-text-field>
-
+          ></v-text-field>
         </v-toolbar>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
@@ -48,12 +60,11 @@
 export default {
   data: () => ({
     dialog: false,
-    search:'',
-    tabs : [ "List","Orders","Request"],
-    breadcrumbs :[
-        { text: 'Products',disabled: false,href:'products'},
-        { text: 'List',disabled: true},
-
+    search: "",
+    tabs: ["List", "Orders", "Request"],
+    breadcrumbs: [
+      { text: "Products", disabled: false, href: "products" },
+      { text: "List", disabled: true },
     ],
     headers: [
       { text: "Name", align: "start", sortable: false, value: "name" },
@@ -61,7 +72,7 @@ export default {
       { text: "Brand (g)", value: "fat" },
       { text: "Stocks (g)", value: "carbs" },
       { text: "Unit", value: "unit" },
-      { text: "Actions", align:'center', value: "actions", sortable: false },
+      { text: "Actions", align: "center", value: "actions", sortable: false },
     ],
     desserts: [],
     editedIndex: -1,

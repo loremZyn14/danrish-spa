@@ -28,7 +28,7 @@
             :key="item.text"
             v-model="item.model"
             :prepend-icon="item.iconR"
-            :append-icon="item.model ? item.icon : item['icon-alt']"
+            :append-icon="item.model ? item.iconL : item['icon-alt']"
           >
             <template v-slot:activator>
               <v-list-item-content>
@@ -65,7 +65,7 @@ export default {
       items: [
         {
           iconR: "mdi-account-circle-outline",
-          icon: "mdi-chevron-up",
+          iconL: "mdi-chevron-up",
           "icon-alt": "mdi-chevron-down",
           model: true,
           text: "My Account",
@@ -86,7 +86,8 @@ export default {
         {
           icon: "mdi-notebook-check",
           text: "My Purchase",
-          link : 'customerPurchase'
+          link : 'customerPurchase',
+          model:false,
         },
       ],
     };

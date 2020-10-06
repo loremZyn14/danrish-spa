@@ -6,7 +6,6 @@
       permanent
       dark
       app
-      clipped
     >
       <v-list dense nav class="py-0">
         <v-subheader>Danrish IT Solution Corp.</v-subheader>

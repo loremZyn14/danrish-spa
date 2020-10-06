@@ -27,6 +27,8 @@ import Addresses from './components/customers/Addresses'
 import SetPassword from './components/customers/SetPassword'
 import PurchaseProducts from './components/customers/PurchaseProducts'
 
+import Services from './components/services/Services'
+
 export default new VueRouter({
     routes: [
         { path: '/auth', name: 'auth', component: Auth },
@@ -40,7 +42,7 @@ export default new VueRouter({
         { path: '/shop/purchase/continue', name: 'purchase', component: Purchase, meta: { requiresAuth: true } },
         { path: '/shop/cart', name: 'cart', component: Cart, meta: { requiresAuth: true } },
         { path: '/products/:id', name : 'product.show', component : ProductShow },
-
+        { path: '/services', name: 'services',component : Services},
         {
             path: '/admin', name: 'admin', component: Admin, children: [
                 { path: 'products', name: 'adminProducts', component: AdminProducts },

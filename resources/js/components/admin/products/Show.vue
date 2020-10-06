@@ -97,8 +97,6 @@ export default {
       addProduct(){
           addProduct(this.product)
           .then((res)=>{
-              console.log(res)
-              this.$store.getters.products.push(this.product)
               this.message = res.data
               this.$swal.fire(res.data,'','success')
           })
