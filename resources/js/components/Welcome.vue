@@ -5,9 +5,9 @@
                 <v-row  align="center">
                     <v-col lg="7">
                         <h3 class="text-h4  font-weight-bold "> Be confident in every purchase. </h3>
-                        <v-divider color="white" class="my-5"></v-divider>
+                        <!-- <v-divider color="white" class="my-5"></v-divider> -->
 
-                        <v-subheader>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti amet reprehenderit sunt quidem numquam neque fugit omnis aliquam, beatae reiciendis voluptatibus ipsam vitae cumque maxime dignissimos excepturi nemo dicta dolorum!</v-subheader>
+                        <!-- <v-subheader>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti amet reprehenderit sunt quidem numquam neque fugit omnis aliquam, beatae reiciendis voluptatibus ipsam vitae cumque maxime dignissimos excepturi nemo dicta dolorum!</v-subheader> -->
                         <br>
                         <v-btn x-large color="blue darken-3 white--text" class="mt-3">Get Started</v-btn>
 

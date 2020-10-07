@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="mt-8">
     <v-row>
       <v-col lg="9">
         <v-card flat>
@@ -46,7 +46,7 @@
         </v-card>
       </v-col>
       <v-col lg="3">
-        <v-sheet class="mt-16 pt-16">
+        <v-sheet class="px-4 py-8">
           <h2>Product Summary</h2>
           <h4 class="mt-2 font-weight-thin">
             Selected Items(

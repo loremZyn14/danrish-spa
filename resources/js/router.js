@@ -44,11 +44,21 @@ export default new VueRouter({
         { path: '/products/:id', name : 'product.show', component : ProductShow },
         { path: '/services', name: 'services',component : Services},
         {
-            path: '/admin', name: 'admin', component: Admin, children: [
-                { path: 'products', name: 'adminProducts', component: AdminProducts },
-                { path: 'services', name: 'adminServices', component: AdminServices }
-            ]
+             path: '/admin/dashboard',
+             name: 'admin',
+             component: Admin
         },
+        {
+            path: '/admin/products/list',
+            name: 'adminProducts',
+            component:()=>import('./components/admin/products/Products')
+        },
+        {
+            path: '/admin/products/orders',
+            name: 'adminProductOrders',
+            component:()=>import('./components/admin/products/Orders')
+        },
+        { path: '/admin/services', name: 'adminServices', component: AdminServices },
         {path:'/admin/products/:id', name:'adminProductsShow', component:AdminProductsShow },
 
     ],

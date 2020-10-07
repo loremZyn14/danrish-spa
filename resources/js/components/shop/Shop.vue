@@ -3,14 +3,14 @@
     <v-data-iterator
       no-data-text="No products available."
       no-results-text="Products are not available."
-      :loading="$store.getters.products.length == 0 ? true: false"
+      :loading="$store.getters.products.length == 0 ? true : false"
       loading-text="Getting all products. please wait a moment..."
       :items="filterProducts"
       :search="search"
       hide-default-footer
     >
       <template v-slot:header>
-        <v-toolbar flat rounded>
+        <v-toolbar flat rounded color="transparent">
           <v-toolbar-title class="black--text text-h4">Shop</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-text-field
@@ -19,13 +19,20 @@
             label="Search products..."
             append-icon="mdi-magnify"
             v-model="search"
+            clearable
             @focus="products = $store.getters.products"
           ></v-text-field>
         </v-toolbar>
         <v-container>
           <h4 class="d-inline mr-8">Categoires</h4>
           <v-chip outlined @click="currentCategory = 'all'">all</v-chip>
-          <v-chip outlined @click="currentCategory = category.name" v-for="(category ,i) in $store.getters.categories" :key="i" v-text="category.name"></v-chip>
+          <v-chip
+            outlined
+            @click="currentCategory = category.name"
+            v-for="(category, i) in $store.getters.categories"
+            :key="i"
+            v-text="category.name"
+          ></v-chip>
         </v-container>
       </template>
       <template v-slot:default="props">
@@ -41,12 +48,13 @@
                   <router-link
                     :to="'/products/' + product.id"
                     class="not-link text-truncate pa-4"
-                    >{{ product.name }} {{product.category.name}}</router-link
+                    >{{ product.name }} {{ product.category.name }}</router-link
                   >
                 </v-card-title>
               </v-img>
               <v-card-text>
-                Price : &#x20B1; {{ product.price }}.00 <br />Stocks : {{ product.stocks + ' ' + product.unit }}
+                Price : &#x20B1; {{ product.price }}.00 <br />Stocks :
+                {{ product.stocks + " " + product.unit }}
               </v-card-text>
             </v-card>
           </v-col>
@@ -62,21 +70,23 @@ export default {
     return {
       search: "",
       products: [],
-      currentCategory : "all"
+      currentCategory: "all",
     };
   },
   computed: {
     filterProducts() {
-      if (this.currentCategory == "all"){
-         return this.$store.getters.products
+      if (this.currentCategory == "all") {
+        return this.$store.getters.products;
       }
-      return  this.$store.getters.products.filter(
+      return this.$store.getters.products.filter(
         (product) => product.category.name === this.currentCategory
       );
     },
   },
-
-
+  mounted() {
+    this.$store.commit("getAllCategory");
+    this.$store.commit("getProducts");
+  },
 };
 </script>
 <style >

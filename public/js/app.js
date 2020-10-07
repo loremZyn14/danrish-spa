@@ -1,6 +1,50 @@
 /******/ (function(modules) { // webpackBootstrap
+/******/ 	// install a JSONP callback for chunk loading
+/******/ 	function webpackJsonpCallback(data) {
+/******/ 		var chunkIds = data[0];
+/******/ 		var moreModules = data[1];
+/******/
+/******/
+/******/ 		// add "moreModules" to the modules object,
+/******/ 		// then flag all "chunkIds" as loaded and fire callback
+/******/ 		var moduleId, chunkId, i = 0, resolves = [];
+/******/ 		for(;i < chunkIds.length; i++) {
+/******/ 			chunkId = chunkIds[i];
+/******/ 			if(Object.prototype.hasOwnProperty.call(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 				resolves.push(installedChunks[chunkId][0]);
+/******/ 			}
+/******/ 			installedChunks[chunkId] = 0;
+/******/ 		}
+/******/ 		for(moduleId in moreModules) {
+/******/ 			if(Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
+/******/ 				modules[moduleId] = moreModules[moduleId];
+/******/ 			}
+/******/ 		}
+/******/ 		if(parentJsonpFunction) parentJsonpFunction(data);
+/******/
+/******/ 		while(resolves.length) {
+/******/ 			resolves.shift()();
+/******/ 		}
+/******/
+/******/ 	};
+/******/
+/******/
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
+/******/
+/******/ 	// object to store loaded and loading chunks
+/******/ 	// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 	// Promise = chunk loading, 0 = chunk loaded
+/******/ 	var installedChunks = {
+/******/ 		"/js/app": 0
+/******/ 	};
+/******/
+/******/
+/******/
+/******/ 	// script path function
+/******/ 	function jsonpScriptSrc(chunkId) {
+/******/ 		return __webpack_require__.p + "" + ({}[chunkId]||chunkId) + ".js"
+/******/ 	}
 /******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
@@ -26,6 +70,67 @@
 /******/ 		return module.exports;
 /******/ 	}
 /******/
+/******/ 	// This file contains only the entry chunk.
+/******/ 	// The chunk loading function for additional chunks
+/******/ 	__webpack_require__.e = function requireEnsure(chunkId) {
+/******/ 		var promises = [];
+/******/
+/******/
+/******/ 		// JSONP chunk loading for javascript
+/******/
+/******/ 		var installedChunkData = installedChunks[chunkId];
+/******/ 		if(installedChunkData !== 0) { // 0 means "already installed".
+/******/
+/******/ 			// a Promise means "currently loading".
+/******/ 			if(installedChunkData) {
+/******/ 				promises.push(installedChunkData[2]);
+/******/ 			} else {
+/******/ 				// setup Promise in chunk cache
+/******/ 				var promise = new Promise(function(resolve, reject) {
+/******/ 					installedChunkData = installedChunks[chunkId] = [resolve, reject];
+/******/ 				});
+/******/ 				promises.push(installedChunkData[2] = promise);
+/******/
+/******/ 				// start chunk loading
+/******/ 				var script = document.createElement('script');
+/******/ 				var onScriptComplete;
+/******/
+/******/ 				script.charset = 'utf-8';
+/******/ 				script.timeout = 120;
+/******/ 				if (__webpack_require__.nc) {
+/******/ 					script.setAttribute("nonce", __webpack_require__.nc);
+/******/ 				}
+/******/ 				script.src = jsonpScriptSrc(chunkId);
+/******/
+/******/ 				// create error before stack unwound to get useful stacktrace later
+/******/ 				var error = new Error();
+/******/ 				onScriptComplete = function (event) {
+/******/ 					// avoid mem leaks in IE.
+/******/ 					script.onerror = script.onload = null;
+/******/ 					clearTimeout(timeout);
+/******/ 					var chunk = installedChunks[chunkId];
+/******/ 					if(chunk !== 0) {
+/******/ 						if(chunk) {
+/******/ 							var errorType = event && (event.type === 'load' ? 'missing' : event.type);
+/******/ 							var realSrc = event && event.target && event.target.src;
+/******/ 							error.message = 'Loading chunk ' + chunkId + ' failed.\n(' + errorType + ': ' + realSrc + ')';
+/******/ 							error.name = 'ChunkLoadError';
+/******/ 							error.type = errorType;
+/******/ 							error.request = realSrc;
+/******/ 							chunk[1](error);
+/******/ 						}
+/******/ 						installedChunks[chunkId] = undefined;
+/******/ 					}
+/******/ 				};
+/******/ 				var timeout = setTimeout(function(){
+/******/ 					onScriptComplete({ type: 'timeout', target: script });
+/******/ 				}, 120000);
+/******/ 				script.onerror = script.onload = onScriptComplete;
+/******/ 				document.head.appendChild(script);
+/******/ 			}
+/******/ 		}
+/******/ 		return Promise.all(promises);
+/******/ 	};
 /******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
@@ -78,6 +183,16 @@
 /******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "/";
+/******/
+/******/ 	// on error function for async loading
+/******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
+/******/
+/******/ 	var jsonpArray = window["webpackJsonp"] = window["webpackJsonp"] || [];
+/******/ 	var oldJsonpFunction = jsonpArray.push.bind(jsonpArray);
+/******/ 	jsonpArray.push = webpackJsonpCallback;
+/******/ 	jsonpArray = jsonpArray.slice();
+/******/ 	for(var i = 0; i < jsonpArray.length; i++) webpackJsonpCallback(jsonpArray[i]);
+/******/ 	var parentJsonpFunction = oldJsonpFunction;
 /******/
 /******/
 /******/ 	// Load entry module and return exports
@@ -2010,7 +2125,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
     logout: function logout() {
@@ -2166,17 +2280,17 @@ __webpack_require__.r(__webpack_exports__);
       items: [{
         title: "Dashboard",
         icon: "mdi-view-dashboard",
-        link: "admin",
+        link: "/admin/dashboard",
         name: "admin"
       }, {
         title: "Products",
         icon: "mdi-food",
-        link: "adminProducts",
+        link: "/admin/products",
         name: "products"
       }, {
         title: "Services",
         icon: "mdi-hammer-wrench",
-        link: "adminServices",
+        link: "/admin/services",
         name: "services"
       }]
     };
@@ -2194,6 +2308,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Admin__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Admin */ "./resources/js/components/admin/Admin.vue");
 //
 //
 //
@@ -2233,184 +2348,34 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      dialog: false,
-      search: "",
-      tabs: ["List", "Orders", "Request"],
-      breadcrumbs: [{
-        text: "Products",
-        disabled: false,
-        href: "products"
-      }, {
-        text: "List",
-        disabled: true
-      }],
-      headers: [{
-        text: "Name",
-        align: "start",
-        sortable: false,
-        value: "name"
-      }, {
-        text: "Price",
-        value: "calories"
-      }, {
-        text: "Brand (g)",
-        value: "fat"
-      }, {
-        text: "Stocks (g)",
-        value: "carbs"
-      }, {
-        text: "Unit",
-        value: "unit"
-      }, {
-        text: "Actions",
-        align: "center",
-        value: "actions",
-        sortable: false
-      }],
-      desserts: [],
-      editedIndex: -1,
-      editedItem: {
-        name: "",
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        unit: ""
-      },
-      defaultItem: {
-        name: "",
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        unit: ""
-      }
-    };
-  },
-  computed: {
-    formTitle: function formTitle() {
-      return this.editedIndex === -1 ? "New Product" : "Edit Product";
-    }
-  },
-  watch: {
-    dialog: function dialog(val) {
-      val || this.close();
-    }
-  },
-  created: function created() {
-    this.initialize();
-  },
-  methods: {
-    initialize: function initialize() {
-      this.desserts = [{
-        name: "Frozen Yogurt",
-        calories: 159,
-        fat: 6.0,
-        carbs: 24,
-        unit: "pcs"
-      }, {
-        name: "Ice cream sandwich",
-        calories: 237,
-        fat: 9.0,
-        carbs: 37,
-        unit: "pcs"
-      }, {
-        name: "Eclair",
-        calories: 262,
-        fat: 16.0,
-        carbs: 23,
-        unit: "dozen"
-      }, {
-        name: "Cupcake",
-        calories: 305,
-        fat: 3.7,
-        carbs: 67,
-        unit: "pack"
-      }, {
-        name: "Gingerbread",
-        calories: 356,
-        fat: 16.0,
-        carbs: 49,
-        unit: "pcs"
-      }, {
-        name: "Jelly bean",
-        calories: 375,
-        fat: 0.0,
-        carbs: 94,
-        unit: "pkg"
-      }, {
-        name: "Lollipop",
-        calories: 392,
-        fat: 0.2,
-        carbs: 98,
-        unit: "pkg"
-      }, {
-        name: "Honeycomb",
-        calories: 408,
-        fat: 3.2,
-        carbs: 87,
-        unit: "pcs"
-      }, {
-        name: "Donut",
-        calories: 452,
-        fat: 25.0,
-        carbs: 51,
-        unit: "pcs"
-      }, {
-        name: "KitKat",
-        calories: 518,
-        fat: 26.0,
-        carbs: 65,
-        unit: "pkg"
-      }];
-    },
-    editItem: function editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
-    },
-    deleteItem: function deleteItem(item) {
-      var index = this.desserts.indexOf(item);
-      confirm("Are you sure you want to delete this item?") && this.desserts.splice(index, 1);
-    },
-    close: function close() {
-      var _this = this;
+  components: {
+    admin: _Admin__WEBPACK_IMPORTED_MODULE_0__["default"]
+  }
+});
 
-      this.dialog = false;
-      this.$nextTick(function () {
-        _this.editedItem = Object.assign({}, _this.defaultItem);
-        _this.editedIndex = -1;
-      });
-    },
-    save: function save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
-      } else {
-        this.desserts.push(this.editedItem);
-      }
+/***/ }),
 
-      this.close();
-    }
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/AdminServices.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/AdminServices.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Admin__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Admin */ "./resources/js/components/admin/Admin.vue");
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    admin: _Admin__WEBPACK_IMPORTED_MODULE_0__["default"]
   }
 });
 
@@ -2484,6 +2449,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2498,33 +2466,12 @@ __webpack_require__.r(__webpack_exports__);
         price: 0,
         stocks: 1,
         unit: "",
-        categoryId: null
+        categoryId: 1
       },
       message: '',
-      items: [{
-        text: "Products",
-        disabled: false,
-        href: "/admin/products"
-      }, {
-        text: "add product",
-        disabled: true,
-        href: "products"
-      }],
       img: "logo.png",
-      selected: {
-        id: 1,
-        name: 'computer'
-      },
-      categories: [{
-        id: 1,
-        name: 'computer'
-      }, {
-        id: 2,
-        name: 'tools'
-      }, {
-        id: 3,
-        name: 'equipment'
-      }]
+      // selected : {id:1,name:'computer'},
+      categories: []
     };
   },
   methods: {
@@ -2539,6 +2486,9 @@ __webpack_require__.r(__webpack_exports__);
         console.log(err);
       });
     }
+  },
+  mounted: function mounted() {
+    this.categories = this.$store.getters.categories;
   },
   watch: {
     selected: {
@@ -3160,9 +3110,6 @@ __webpack_require__.r(__webpack_exports__);
         end: null
       }
     };
-  },
-  mounted: function mounted() {
-    console.log(this.$store.getters.orders);
   }
 });
 
@@ -3253,14 +3200,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'product-feature',
-  data: function data() {
-    return {
-      items: 8
-    };
-  }
-});
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
 
@@ -4241,6 +4186,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -4261,6 +4214,10 @@ __webpack_require__.r(__webpack_exports__);
         return product.category.name === _this.currentCategory;
       });
     }
+  },
+  mounted: function mounted() {
+    this.$store.commit("getAllCategory");
+    this.$store.commit("getProducts");
   }
 });
 
@@ -43793,8 +43750,11 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-app",
-    { attrs: { id: "app" } },
-    [_c("app-bar"), _vm._v(" "), _c("v-main", [_c("router-view")], 1)],
+    [
+      _c("app-bar"),
+      _vm._v(" "),
+      _c("v-main", { staticClass: "grey lighten-3" }, [_c("router-view")], 1)
+    ],
     1
   )
 }
@@ -43835,43 +43795,54 @@ var render = function() {
         _c("img", { attrs: { src: "/assets/img/logo.png", alt: "alt" } })
       ]),
       _vm._v(" "),
-      !_vm.$vuetify.breakpoint.xs
-        ? _c(
-            "v-toolbar-title",
-            [
-              _c(
+      _c(
+        "v-toolbar-title",
+        [
+          _vm.$vuetify.breakpoint.xs
+            ? _c(
                 "router-link",
-                {
-                  staticClass: "v-toolbar__title sm-and-down",
-                  attrs: { to: "/" }
-                },
-                [_vm._v("Danrish IT Solution")]
-              )
-            ],
-            1
-          )
-        : _c(
-            "v-toolbar-title",
-            [
-              _c(
-                "router-link",
-                {
-                  staticClass: "v-toolbar__title sm-and-down",
-                  attrs: { to: "/" }
-                },
+                { staticClass: "v-toolbar__title ", attrs: { to: "/" } },
                 [_vm._v("DITS")]
               )
-            ],
-            1
-          ),
+            : _vm._e(),
+          _vm._v(" "),
+          _c(
+            "router-link",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: !_vm.$vuetify.breakpoint.xs,
+                  expression: "!$vuetify.breakpoint.xs"
+                }
+              ],
+              staticClass: "v-toolbar__title ",
+              attrs: { to: "/" }
+            },
+            [_vm._v("Danrish IT Solution")]
+          )
+        ],
+        1
+      ),
       _vm._v(" "),
       _c(
         "v-toolbar-title",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: !_vm.$vuetify.breakpoint.xs,
+              expression: "!$vuetify.breakpoint.xs"
+            }
+          ]
+        },
         [
           _c(
             "router-link",
             {
-              staticClass: "v-toolbar__title sm-and-down ml-8",
+              staticClass: "v-toolbar__title sm-and-up ml-8",
               attrs: { to: "/shop" }
             },
             [_vm._v("Shop")]
@@ -43882,11 +43853,21 @@ var render = function() {
       _vm._v(" "),
       _c(
         "v-toolbar-title",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: !_vm.$vuetify.breakpoint.xs,
+              expression: "!$vuetify.breakpoint.xs"
+            }
+          ]
+        },
         [
           _c(
             "router-link",
             {
-              staticClass: "v-toolbar__title sm-and-down ml-8",
+              staticClass: "v-toolbar__title sm-and-up ml-8",
               attrs: { to: "/services" }
             },
             [_vm._v("Services")]
@@ -44069,17 +44050,6 @@ var render = function() {
                         _vm._v(" Be confident in every purchase. ")
                       ]),
                       _vm._v(" "),
-                      _c("v-divider", {
-                        staticClass: "my-5",
-                        attrs: { color: "white" }
-                      }),
-                      _vm._v(" "),
-                      _c("v-subheader", [
-                        _vm._v(
-                          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti amet reprehenderit sunt quidem numquam neque fugit omnis aliquam, beatae reiciendis voluptatibus ipsam vitae cumque maxime dignissimos excepturi nemo dicta dolorum!"
-                        )
-                      ]),
-                      _vm._v(" "),
                       _c("br"),
                       _vm._v(" "),
                       _c(
@@ -44153,11 +44123,20 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-app",
+    { attrs: { id: "inspire" } },
     [
       _c(
         "v-navigation-drawer",
         {
-          attrs: { color: "primary", permanent: "", dark: "", app: "" },
+          attrs: {
+            color: "primary",
+            permanent: "",
+            dark: "",
+            app: "",
+            "mini-variant": "",
+            clipped: "",
+            "expand-on-hover": ""
+          },
           model: {
             value: _vm.drawer,
             callback: function($$v) {
@@ -44171,8 +44150,6 @@ var render = function() {
             "v-list",
             { staticClass: "py-0", attrs: { dense: "", nav: "" } },
             [
-              _c("v-subheader", [_vm._v("Danrish IT Solution Corp.")]),
-              _vm._v(" "),
               _c(
                 "v-list-item",
                 { staticClass: "miniVariant px-0", attrs: { "two-line": "" } },
@@ -44205,7 +44182,7 @@ var render = function() {
                 _vm._l(_vm.items, function(item, i) {
                   return _c(
                     "v-list-item",
-                    { key: i, attrs: { link: "", to: { name: item.link } } },
+                    { key: i, attrs: { to: { path: item.link } } },
                     [
                       _c(
                         "v-list-item-icon",
@@ -44239,8 +44216,6 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c("router-view"),
-      _vm._v(" "),
       _vm._t("default")
     ],
     2
@@ -44269,31 +44244,73 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-card",
-    { staticClass: "pa-8", attrs: { flat: "" } },
+    "admin",
     [
       _c(
-        "v-sheet",
-        { staticClass: "mb-3" },
+        "v-row",
         [
           _c(
-            "v-row",
-            { attrs: { align: "end" } },
+            "v-col",
+            { staticClass: "pl-12 py-16", attrs: { cols: "3" } },
             [
-              _c("v-col", [_c("h2", [_vm._v("Products")])]),
-              _vm._v(" "),
               _c(
-                "v-col",
+                "v-list",
+                { attrs: { shaped: "", tile: "", elevation: "8" } },
                 [
                   _c(
-                    "v-tabs",
-                    { attrs: { right: "" } },
-                    _vm._l(_vm.tabs, function(tab, i) {
-                      return _c("v-tab", {
-                        key: i,
-                        domProps: { textContent: _vm._s(tab) }
-                      })
-                    }),
+                    "v-list-item",
+                    { attrs: { link: "", to: "/admin/products/list" } },
+                    [
+                      _c(
+                        "v-list-item-icon",
+                        [_c("v-icon", [_vm._v("mdi-account")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-list-item-content",
+                        [_c("v-list-item-title", [_vm._v("Products")])],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-list-item",
+                    { attrs: { link: "", to: "/admin/products/orders" } },
+                    [
+                      _c(
+                        "v-list-item-icon",
+                        [_c("v-icon", [_vm._v("mdi-account")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-list-item-content",
+                        [_c("v-list-item-title", [_vm._v("Orders")])],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-list-item",
+                    { attrs: { link: "" } },
+                    [
+                      _c(
+                        "v-list-item-icon",
+                        [_c("v-icon", [_vm._v("mdi-account")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-list-item-content",
+                        [_c("v-list-item-title", [_vm._v("Request")])],
+                        1
+                      )
+                    ],
                     1
                   )
                 ],
@@ -44301,142 +44318,17 @@ var render = function() {
               )
             ],
             1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-col",
+            { staticClass: "pr-8 py-16", attrs: { cols: "9" } },
+            [_vm._t("default")],
+            2
           )
         ],
         1
-      ),
-      _vm._v(" "),
-      _c("v-data-table", {
-        staticClass: "elevation-1",
-        attrs: {
-          headers: _vm.headers,
-          items: _vm.desserts,
-          search: _vm.search,
-          "sort-by": "calories"
-        },
-        scopedSlots: _vm._u(
-          [
-            {
-              key: "top",
-              fn: function() {
-                return [
-                  _c(
-                    "v-toolbar",
-                    { attrs: { flat: "", color: " text--white" } },
-                    [
-                      _c(
-                        "v-btn",
-                        {
-                          staticClass: "my-2",
-                          attrs: {
-                            color: "text--white",
-                            text: "",
-                            outlined: "",
-                            to: { path: "/admin/products/addproduct" },
-                            link: ""
-                          }
-                        },
-                        [
-                          _vm._v("\n          Add Product\n          "),
-                          _c("v-icon", [_vm._v("mdi-plus")])
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c("v-spacer"),
-                      _vm._v(" "),
-                      _c("v-text-field", {
-                        attrs: {
-                          "append-icon": "mdi-magnify",
-                          label: "Search",
-                          "single-line": "",
-                          "hide-details": "",
-                          color: "text-white"
-                        },
-                        model: {
-                          value: _vm.search,
-                          callback: function($$v) {
-                            _vm.search = $$v
-                          },
-                          expression: "search"
-                        }
-                      })
-                    ],
-                    1
-                  )
-                ]
-              },
-              proxy: true
-            },
-            {
-              key: "item.actions",
-              fn: function(ref) {
-                var item = ref.item
-                return [
-                  _c(
-                    "v-icon",
-                    {
-                      staticClass: "mr-2",
-                      attrs: { small: "" },
-                      on: {
-                        click: function($event) {
-                          return _vm.editItem(item)
-                        }
-                      }
-                    },
-                    [_vm._v("mdi-eye")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-icon",
-                    {
-                      staticClass: "mr-2",
-                      attrs: { small: "" },
-                      on: {
-                        click: function($event) {
-                          return _vm.editItem(item)
-                        }
-                      }
-                    },
-                    [_vm._v("mdi-pencil")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-icon",
-                    {
-                      attrs: { small: "" },
-                      on: {
-                        click: function($event) {
-                          return _vm.deleteItem(item)
-                        }
-                      }
-                    },
-                    [_vm._v("mdi-delete")]
-                  )
-                ]
-              }
-            },
-            {
-              key: "no-data",
-              fn: function() {
-                return [
-                  _c(
-                    "v-btn",
-                    {
-                      attrs: { color: "primary" },
-                      on: { click: _vm.initialize }
-                    },
-                    [_vm._v("Reset")]
-                  )
-                ]
-              },
-              proxy: true
-            }
-          ],
-          null,
-          true
-        )
-      })
+      )
     ],
     1
   )
@@ -44463,7 +44355,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n    SErices\n")])
+  return _c("admin", [_vm._v("\n   comming soon\n")])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -44493,7 +44385,24 @@ var render = function() {
       _c(
         "v-container",
         [
-          _c("v-breadcrumbs", { attrs: { items: _vm.items, large: "" } }),
+          _c(
+            "v-btn",
+            {
+              staticClass: "mb-4",
+              attrs: {
+                color: "primary",
+                link: "",
+                text: "",
+                outlined: "",
+                to: "/admin/products"
+              }
+            },
+            [
+              _c("v-icon", [_vm._v("mdi-arrow-left")]),
+              _vm._v("\n    Show Products\n    ")
+            ],
+            1
+          ),
           _vm._v(" "),
           _c("v-divider"),
           _vm._v(" "),
@@ -44638,7 +44547,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("v-select", {
                         attrs: {
-                          items: _vm.categories,
+                          items: _vm.$store.getters.categories,
                           prefix: "Category: ",
                           "item-text": "name",
                           "item-value": "id",
@@ -44646,11 +44555,11 @@ var render = function() {
                           solo: ""
                         },
                         model: {
-                          value: _vm.selected,
+                          value: _vm.selected.id,
                           callback: function($$v) {
-                            _vm.selected = $$v
+                            _vm.$set(_vm.selected, "id", $$v)
                           },
-                          expression: "selected"
+                          expression: "selected.id"
                         }
                       })
                     ],
@@ -46156,7 +46065,7 @@ var render = function() {
             },
             [
               _c("h1", [
-                _vm._v("Feature Products "),
+                _vm._v("\n        Feature Products\n        "),
                 _c(
                   "span",
                   [
@@ -46189,58 +46098,70 @@ var render = function() {
             [
               _c(
                 "v-row",
-                _vm._l(_vm.items, function(item) {
+                _vm._l(_vm.$store.getters.products.slice(0, 8), function(
+                  product,
+                  i
+                ) {
                   return _c(
                     "v-col",
-                    { key: item, attrs: { sm: "6", lg: "3" } },
+                    { key: i, attrs: { sm: "6", lg: "3" } },
                     [
                       _c(
                         "v-card",
-                        { attrs: { outlined: "", "max-width": "400" } },
+                        {
+                          attrs: { outlined: "", "max-width": "400", light: "" }
+                        },
                         [
                           _c(
                             "v-img",
                             {
                               staticClass: "white--text align-end",
                               attrs: {
-                                src:
-                                  "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
-                                height: "150px"
+                                src: "/assets/img/logo.png",
+                                height: "150px",
+                                "lazy-src": "/assets/img/default.png"
                               }
                             },
-                            [_c("v-card-title", [_vm._v("Product Name")])],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c("v-card-text", [
-                            _vm._v(
-                              "\n\n                                Price : ₱ 18,000.00 "
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n                            Stocks : 10 pcs\n\n                        "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "v-card-actions",
                             [
                               _c(
-                                "v-btn",
-                                { attrs: { color: "primary", outlined: "" } },
+                                "v-card-title",
+                                { staticClass: "text-subtitle pa-0 blur" },
                                 [
-                                  _c("v-icon", { attrs: { left: "" } }, [
-                                    _vm._v("mdi-plus")
-                                  ]),
-                                  _vm._v(
-                                    "\n                                Add to Cart\n                            "
+                                  _c(
+                                    "router-link",
+                                    {
+                                      staticClass:
+                                        "not-link text-truncate pa-4",
+                                      attrs: { to: "/products/" + product.id }
+                                    },
+                                    [
+                                      _vm._v(
+                                        _vm._s(product.name) +
+                                          " " +
+                                          _vm._s(product.category.name)
+                                      )
+                                    ]
                                   )
                                 ],
                                 1
                               )
                             ],
                             1
-                          )
+                          ),
+                          _vm._v(" "),
+                          _c("v-card-text", [
+                            _vm._v(
+                              "\n              Price : ₱ " +
+                                _vm._s(product.price) +
+                                ".00 "
+                            ),
+                            _c("br"),
+                            _vm._v(
+                              "Stocks :\n              " +
+                                _vm._s(product.stocks + " " + product.unit) +
+                                "\n            "
+                            )
+                          ])
                         ],
                         1
                       )
@@ -47059,6 +46980,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-container",
+    { staticClass: "mt-8" },
     [
       _c(
         "v-row",
@@ -47213,7 +47135,7 @@ var render = function() {
             [
               _c(
                 "v-sheet",
-                { staticClass: "mt-16 pt-16" },
+                { staticClass: "px-4 py-8" },
                 [
                   _c("h2", [_vm._v("Product Summary")]),
                   _vm._v(" "),
@@ -47749,7 +47671,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "v-sheet",
-        { staticClass: "mb-4 pa-4", attrs: { elevation: "2" } },
+        { staticClass: "mb-4 p  a-4", attrs: { elevation: "2" } },
         [
           _c("v-simple-table", {
             scopedSlots: _vm._u([
@@ -47953,7 +47875,7 @@ var render = function() {
               return [
                 _c(
                   "v-toolbar",
-                  { attrs: { flat: "", rounded: "" } },
+                  { attrs: { flat: "", rounded: "", color: "transparent" } },
                   [
                     _c(
                       "v-toolbar-title",
@@ -47968,7 +47890,8 @@ var render = function() {
                         solo: "",
                         "hide-details": "",
                         label: "Search products...",
-                        "append-icon": "mdi-magnify"
+                        "append-icon": "mdi-magnify",
+                        clearable: ""
                       },
                       on: {
                         focus: function($event) {
@@ -48095,7 +48018,7 @@ var render = function() {
                               ),
                               _c("br"),
                               _vm._v(
-                                "Stocks : " +
+                                "Stocks :\n              " +
                                   _vm._s(product.stocks + " " + product.unit) +
                                   "\n            "
                               )
@@ -108880,15 +108803,17 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AdminServices_vue_vue_type_template_id_353d4172___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AdminServices.vue?vue&type=template&id=353d4172& */ "./resources/js/components/admin/AdminServices.vue?vue&type=template&id=353d4172&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _AdminServices_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AdminServices.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/AdminServices.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
-var script = {}
+
+
 
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
-  script,
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _AdminServices_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _AdminServices_vue_vue_type_template_id_353d4172___WEBPACK_IMPORTED_MODULE_0__["render"],
   _AdminServices_vue_vue_type_template_id_353d4172___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
@@ -108902,6 +108827,20 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 if (false) { var api; }
 component.options.__file = "resources/js/components/admin/AdminServices.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/AdminServices.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/admin/AdminServices.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminServices_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./AdminServices.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/AdminServices.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminServices_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -110144,18 +110083,25 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
     name: 'services',
     component: _components_services_Services__WEBPACK_IMPORTED_MODULE_16__["default"]
   }, {
-    path: '/admin',
+    path: '/admin/dashboard',
     name: 'admin',
-    component: _components_admin_Admin__WEBPACK_IMPORTED_MODULE_5__["default"],
-    children: [{
-      path: 'products',
-      name: 'adminProducts',
-      component: _components_admin_AdminProducts__WEBPACK_IMPORTED_MODULE_6__["default"]
-    }, {
-      path: 'services',
-      name: 'adminServices',
-      component: _components_admin_AdminServices__WEBPACK_IMPORTED_MODULE_8__["default"]
-    }]
+    component: _components_admin_Admin__WEBPACK_IMPORTED_MODULE_5__["default"]
+  }, {
+    path: '/admin/products/list',
+    name: 'adminProducts',
+    component: function component() {
+      return __webpack_require__.e(/*! import() */ 1).then(__webpack_require__.bind(null, /*! ./components/admin/products/Products */ "./resources/js/components/admin/products/Products.vue"));
+    }
+  }, {
+    path: '/admin/products/orders',
+    name: 'adminProductOrders',
+    component: function component() {
+      return __webpack_require__.e(/*! import() */ 0).then(__webpack_require__.bind(null, /*! ./components/admin/products/Orders */ "./resources/js/components/admin/products/Orders.vue"));
+    }
+  }, {
+    path: '/admin/services',
+    name: 'adminServices',
+    component: _components_admin_AdminServices__WEBPACK_IMPORTED_MODULE_8__["default"]
   }, {
     path: '/admin/products/:id',
     name: 'adminProductsShow',

@@ -1,8 +1,8 @@
 <template>
-  <v-app id="app">
+  <v-app  >
     <app-bar></app-bar>
 
-    <v-main>
+    <v-main class="grey lighten-3" >
         <!-- <v-progress-linear v-if="isLoading" indeterminate color="primary"  ></v-progress-linear> -->
         <router-view></router-view>
     </v-main>

@@ -153,8 +153,5 @@ export default {
       end: null,
     },
   }),
-  mounted() {
-    console.log(this.$store.getters.orders);
-  },
 };
 </script>

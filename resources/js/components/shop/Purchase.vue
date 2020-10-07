@@ -118,7 +118,7 @@
         >
       </v-banner>
     </v-sheet>
-    <v-sheet class="mb-4 pa-4" elevation="2">
+    <v-sheet class="mb-4 p  a-4" elevation="2">
       <v-simple-table>
         <template v-slot:default>
           <thead>

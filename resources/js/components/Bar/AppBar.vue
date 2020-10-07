@@ -4,17 +4,16 @@
       <v-avatar size="32" class="mr-3">
         <img src="/assets/img/logo.png" alt="alt" />
       </v-avatar>
-      <v-toolbar-title v-if="!$vuetify.breakpoint.xs">
-        <router-link class="v-toolbar__title sm-and-down" to="/">Danrish IT Solution</router-link>
+      <v-toolbar-title >
+          <router-link v-if="$vuetify.breakpoint.xs" class="v-toolbar__title " to="/">DITS</router-link>
+            <router-link v-show="!$vuetify.breakpoint.xs" class="v-toolbar__title " to="/">Danrish IT Solution</router-link>
+
       </v-toolbar-title>
-      <v-toolbar-title v-else>
-        <router-link class="v-toolbar__title sm-and-down" to="/">DITS</router-link>
+      <v-toolbar-title v-show="!$vuetify.breakpoint.xs">
+        <router-link class="v-toolbar__title sm-and-up ml-8" to="/shop">Shop</router-link>
       </v-toolbar-title>
-      <v-toolbar-title>
-        <router-link class="v-toolbar__title sm-and-down ml-8" to="/shop">Shop</router-link>
-      </v-toolbar-title>
-      <v-toolbar-title>
-        <router-link class="v-toolbar__title sm-and-down ml-8" to="/services">Services</router-link>
+      <v-toolbar-title v-show="!$vuetify.breakpoint.xs">
+        <router-link class="v-toolbar__title sm-and-up ml-8" to="/services">Services</router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <template v-if="!user">

@@ -1,7 +1,10 @@
 <template>
   <admin>
     <v-container>
-      <v-breadcrumbs :items="items" large></v-breadcrumbs>
+      <v-btn color="primary" link text outlined to="/admin/products" class="mb-4">
+      <v-icon>mdi-arrow-left</v-icon>
+      Show Products
+      </v-btn>
       <v-divider></v-divider>
       <v-row>
         <v-col lg="5">
@@ -46,7 +49,7 @@
                 solo
               ></v-text-field>
             </v-col>
-            <v-select v-model="selected" :items="categories" prefix="Category: " item-text="name" item-value="id"  return-object  solo></v-select>
+            <v-select v-model="selected.id" :items="$store.getters.categories" prefix="Category: " item-text="name" item-value="id"  return-object  solo></v-select>
           </v-row>
           <v-btn color="primary" @click="addProduct()">Add Product</v-btn>
         </v-col>
@@ -70,28 +73,12 @@ export default {
       price: 0,
       stocks: 1,
       unit: "",
-      categoryId: null
+      categoryId: 1
     },
     message :'',
-    items: [
-      {
-        text: "Products",
-        disabled: false,
-        href: "/admin/products",
-      },
-      {
-        text: "add product",
-        disabled: true,
-        href: "products",
-      },
-    ],
     img: "logo.png",
-    selected : {id:1,name:'computer'},
-    categories: [
-        {id: 1, name:'computer'},
-        {id: 2, name: 'tools'},
-        {id: 3 ,name:'equipment'}
-    ],
+    // selected : {id:1,name:'computer'},
+    categories: [],
   }),
   methods: {
       addProduct(){
@@ -104,6 +91,9 @@ export default {
               console.log(err);
           })
       }
+  },
+  mounted(){
+      this.categories = this.$store.getters.categories
   },
   watch: {
       selected:{
