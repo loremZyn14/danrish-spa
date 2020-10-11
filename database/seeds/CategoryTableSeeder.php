@@ -1,6 +1,8 @@
 <?php
 
+use App\Category;
 use Illuminate\Database\Seeder;
+use Mock\CategoryMock;
 
 class CategoryTableSeeder extends Seeder
 {
@@ -11,11 +13,8 @@ class CategoryTableSeeder extends Seeder
      */
     public function run()
     {
-        $categories = factory(App\Category::class,10)->create();
-
-        foreach($categories as $category){
-            $productId = factory(App\Product::class)->create()->pluck('id');
-            $category->products()->attach($productId);
+        foreach(CategoryMock::categories() as $category){
+            Category::create($category);
         }
     }
 }

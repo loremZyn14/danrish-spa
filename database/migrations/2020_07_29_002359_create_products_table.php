@@ -24,7 +24,6 @@ class CreateProductsTable extends Migration
             $table->boolean('status')->default(true);
             $table->integer('total_order')->default(0);
             $table->string('description')->nullable();
-            $table->json('images')->nullable();
             $table->timestamps();
         });
     }

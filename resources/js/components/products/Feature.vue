@@ -16,7 +16,7 @@
             <v-card outlined max-width="400" light>
               <v-img
                 class="white--text align-end"
-                :src="product.images[0].image_url"
+                :src="product.images.length ? product.images[0].image_url: '/assets/img/default.png'"
                 height="150px"
                 lazy-src="/assets/img/default.png"
               >
@@ -24,7 +24,7 @@
                   <router-link
                     :to="'/products/' + product.id"
                     class="not-link text-truncate pa-4"
-                    >{{ product.name }} {{ product.category.name }}</router-link
+                    >{{ product.name }} </router-link
                   >
                 </v-card-title>
               </v-img>

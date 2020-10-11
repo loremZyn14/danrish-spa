@@ -63,7 +63,7 @@
               <v-card outlined max-width="400" light>
                 <v-img
                   class="white--text align-end"
-                  :src="product.images[0].image_url"
+                  :src="product.images.length ? product.images[0].image_url: '/assets/img/default.png'"
                   height="150px"
                   lazy-src="/assets/img/default.png"
                 >
@@ -74,13 +74,13 @@
                       class="not-link text-truncate pa-4"
                       :title="product.name"
                       >{{ product.name }}
-                      {{ product.category.name }}</router-link
+                     </router-link
                     >
                   </v-card-title>
                 </v-img>
                 <v-card-text>
-                  Price : &#x20B1; {{ price(product.price) }}.00 <br />Stocks :
-                  {{ product.stocks + " " + product.unit }}
+                  Price : &#x20B1; {{ price(product.price) }}.00 <br />
+                  {{ product.status ? 'Stocks :' + product.stocks + " " + product.unit : 'Out of Stocks' }}
                 </v-card-text>
               </v-card>
             </v-col>

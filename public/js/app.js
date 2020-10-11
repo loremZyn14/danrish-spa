@@ -45579,7 +45579,9 @@ var render = function() {
                             {
                               staticClass: "white--text align-end",
                               attrs: {
-                                src: product.images[0].image_url,
+                                src: product.images.length
+                                  ? product.images[0].image_url
+                                  : "/assets/img/default.png",
                                 height: "150px",
                                 "lazy-src": "/assets/img/default.png"
                               }
@@ -45596,13 +45598,7 @@ var render = function() {
                                         "not-link text-truncate pa-4",
                                       attrs: { to: "/products/" + product.id }
                                     },
-                                    [
-                                      _vm._v(
-                                        _vm._s(product.name) +
-                                          " " +
-                                          _vm._s(product.category.name)
-                                      )
-                                    ]
+                                    [_vm._v(_vm._s(product.name) + " ")]
                                   )
                                 ],
                                 1
@@ -47447,7 +47443,9 @@ var render = function() {
                                   {
                                     staticClass: "white--text align-end",
                                     attrs: {
-                                      src: product.images[0].image_url,
+                                      src: product.images.length
+                                        ? product.images[0].image_url
+                                        : "/assets/img/default.png",
                                       height: "150px",
                                       "lazy-src": "/assets/img/default.png"
                                     }
@@ -47472,8 +47470,7 @@ var render = function() {
                                           [
                                             _vm._v(
                                               _vm._s(product.name) +
-                                                "\n                    " +
-                                                _vm._s(product.category.name)
+                                                "\n                   "
                                             )
                                           ]
                                         )
@@ -47492,9 +47489,14 @@ var render = function() {
                                   ),
                                   _c("br"),
                                   _vm._v(
-                                    "Stocks :\n                " +
+                                    "\n                " +
                                       _vm._s(
-                                        product.stocks + " " + product.unit
+                                        product.status
+                                          ? "Stocks :" +
+                                              product.stocks +
+                                              " " +
+                                              product.unit
+                                          : "Out of Stocks"
                                       ) +
                                       "\n              "
                                   )
