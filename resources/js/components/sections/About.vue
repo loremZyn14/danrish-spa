@@ -10,7 +10,7 @@
 
                             <h3 class="font-weight-medium text-justify mb-3">
                                 &emsp; We, at Danrish IT Solution, aim to deliver IT excellence at its finest; may it be Hardware, Sofware and Network services.
-                                Quality assurance is our focus, Customer satifaction is out priority, Employment opportunity is our goal.
+                                Quality assurance is our focus, Customer satisfaction is our priority, Employment opportunity is our goal.
                             </h3>
                             <v-row>
                                 <v-col lg="3" v-for="item in about" :key="item.text"  class="text-center">
@@ -24,7 +24,7 @@
                     </v-col>
                     <v-col lg="6">
                         <v-sheet elevation="16">
-                            <v-img height="300px" src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"></v-img>
+                            <v-img height="300px" src="/assets/img/about-us.png" aspect-ratio="3/4"></v-img>
                         </v-sheet>
                     </v-col>
                 </v-row>

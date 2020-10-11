@@ -38,7 +38,7 @@
                       >
                         <v-list-item-avatar>
                           <v-img
-                            src="https://randomuser.me/api/portraits/men/81.jpg"
+                            :src="product.images[0].image_url"
                           ></v-img>
                         </v-list-item-avatar>
                         <v-list-item-content>

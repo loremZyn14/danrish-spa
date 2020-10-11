@@ -83,7 +83,7 @@
             </v-col>
             <v-col>
               <v-select
-                v-model="selected.id"
+                v-model="product.category.id"
                 :items="$store.getters.categories"
                 prefix="Category: "
                 item-text="name"
@@ -102,7 +102,7 @@
             </v-col>
           </v-row>
 
-          <v-btn color="primary" @click="addProduct()">Add Product</v-btn>
+          <v-btn color="primary" @click="addProduct()">Edit Product</v-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -119,15 +119,7 @@ export default {
     ckeditor: CKEditor.component,
   },
   data: () => ({
-    product: {
-      name: "",
-      brand: "",
-      price: 0,
-      stocks: 1,
-      unit: "",
-      description: "" ,
-      categoryId: 1,
-    },
+
     editor: ClassicEditor,
     image: "/assets/img/default.png",
     message: "",
@@ -161,6 +153,11 @@ export default {
   computed: {
     preview() {
       return this.image;
+    },
+    product() {
+      return this.$store.getters.products.find(
+        (product) => product.id == this.$route.params.id
+      );
     },
   },
   mounted() {

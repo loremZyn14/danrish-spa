@@ -7,6 +7,7 @@ use App\Product;
 use App\Resource\ProductResource;
 use Illuminate\Http\Request;
 
+
 class ProductController extends Controller
 {
     public $productResource;
@@ -43,14 +44,12 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $data = [
-            'name'=> $request->name,
-            'brand'=> $request->brand,
-            'stocks'=> $request->stocks,
-            'price'=> $request->price,
-            'unit'=> $request->unit,
-        ];
-        $this->productResource->addProduct($request->categoryId,$data);
+
+        $this->productResource->addProduct(
+            $request->categoryId,
+            $request->except(['categoryId', 'image']),
+            $request->image
+        );
 
         return response()->json('Product Successfully Added.');
     }
@@ -63,7 +62,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return view('products.show',compact('product'));
+        return view('products.show', compact('product'));
     }
 
     /**
@@ -99,4 +98,6 @@ class ProductController extends Controller
     {
         //
     }
+
+
 }

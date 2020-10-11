@@ -27,15 +27,21 @@ export function getProductById(id) {
     })
 }
 // Add one product to the database
-export function addProduct(product) {
+export function addProduct(product,image) {
     return new Promise((resolve, reject) => {
-        axios.post('/api/products', {
-            name: product.name,
-            brand: product.brand,
-            stocks: product.stocks,
-            price: product.price,
-            unit: product.unit,
-            categoryId: product.categoryId
+        var formData = new FormData();
+        formData.append('name',product.name)
+        formData.append('brand',product.brand)
+        formData.append('stocks',product.stocks)
+        formData.append('price',product.price)
+        formData.append('unit',product.unit)
+        formData.append('description',product.description)
+        formData.append('categoryId',product.categoryId)
+        formData.append('image',image)
+        axios.post('/api/products', formData,{
+            headers: {
+                'Content-Type': 'multipart/form-data'
+              }
         }).then((response) => {
             resolve(response);
         }).catch((error) => {

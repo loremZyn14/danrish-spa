@@ -3,6 +3,8 @@
     <v-row >
       <v-col cols="3" class="pl-12 py-16">
           <v-list shaped  tile elevation="8" >
+              <v-subheader><v-icon left>mdi-menu</v-icon> Menus</v-subheader>
+              <v-divider class="mb-4"></v-divider>
               <v-list-item link to="/admin/products/list">
                   <v-list-item-icon>
                       <v-icon>mdi-account</v-icon>

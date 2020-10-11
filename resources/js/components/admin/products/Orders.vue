@@ -5,7 +5,7 @@
           :items="$store.getters.products"
           :search="search"
           sort-by="calories"
-          class="elevation-8 rounded"
+          class="elevation-8 rounded pt-4"
         >
           <template v-slot:top>
             <v-toolbar flat color="red--text" rounded>

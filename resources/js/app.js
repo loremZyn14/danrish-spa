@@ -13,6 +13,7 @@ import AppComponent from './components/App';
 
 
 
+
 require('./bootstrap');
 Vue.use(VueSweetalert2);
 Vue.use(Vuetify)

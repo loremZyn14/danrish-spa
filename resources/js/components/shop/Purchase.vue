@@ -133,7 +133,7 @@
             <tr v-for="(product, i) in purchaseProducts" :key="i">
               <td>
                 <v-avatar size="32" color="transparent" tile left>
-                  <img src="/assets/img/logo.png" alt="alt" />
+                  <img :src="product.images[0].image_url" alt="alt" />
                 </v-avatar>
                 {{ product.name }}
               </td>

@@ -20,7 +20,7 @@ export default {
     dialog: false,
     isLoading:true
   }),
-  created(){
+  mounted(){
       this.$store.commit('getAllCategory')
       this.$store.commit('getProducts')
   }

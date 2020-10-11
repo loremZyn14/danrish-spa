@@ -13,8 +13,6 @@ import Cart from './components/shop/Cart';
 
 
 import Admin from './components/admin/Admin'
-import AdminProducts from './components/admin/AdminProducts'
-import AdminProductsShow from './components/admin/products/Show'
 import AdminServices from './components/admin/AdminServices'
 
 import Welcome from './components/Welcome';
@@ -46,7 +44,7 @@ export default new VueRouter({
         {
              path: '/admin/dashboard',
              name: 'admin',
-             component: Admin
+             component: ()=>import('./components/admin/Dashboard')
         },
         {
             path: '/admin/products/list',
@@ -58,8 +56,26 @@ export default new VueRouter({
             name: 'adminProductOrders',
             component:()=>import('./components/admin/products/Orders')
         },
-        { path: '/admin/services', name: 'adminServices', component: AdminServices },
-        {path:'/admin/products/:id', name:'adminProductsShow', component:AdminProductsShow },
+        {
+            path:'/admin/products/addproduct',
+            name:'adminAddProduct',
+            component:()=>import('./components/admin/products/Show')
+        },
+        {
+            path:'/admin/products/:id/view',
+            name:'adminViewProduct',
+            component:()=>import('./components/admin/products/View')
+        },
+        {
+            path:'/admin/products/:id/edit',
+            name:'adminEditProduct',
+            component:()=>import('./components/admin/products/Edit')
+        },
+        {
+            path: '/admin/services',
+            name: 'adminServices',
+            component: AdminServices
+        },
 
     ],
     mode: 'history'

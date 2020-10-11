@@ -102,7 +102,7 @@
             </v-col>
           </v-row>
 
-          <v-btn color="primary" @click="addProduct()">Add Product</v-btn>
+          <v-btn color="primary" @click="addProduct()">View Product</v-btn>
         </v-col>
       </v-row>
     </v-container>

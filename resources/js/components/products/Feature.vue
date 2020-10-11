@@ -16,7 +16,7 @@
             <v-card outlined max-width="400" light>
               <v-img
                 class="white--text align-end"
-                src="/assets/img/logo.png"
+                :src="product.images[0].image_url"
                 height="150px"
                 lazy-src="/assets/img/default.png"
               >

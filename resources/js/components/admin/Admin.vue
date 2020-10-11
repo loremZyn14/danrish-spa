@@ -58,7 +58,7 @@ export default {
         {
           title: "Products",
           icon: "mdi-food",
-          link: "/admin/products",
+          link: "/admin/products/list",
           name: "products",
         },
         {

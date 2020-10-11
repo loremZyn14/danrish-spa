@@ -134,7 +134,7 @@ export default new Vuex.Store({
                     product.subTotal = product.price
                 });
                 state.products = response.data
-                // console.log(response.data);
+                console.log(response.data);
             })
             .catch((error)=>{
                 alert('Something went wrong!')

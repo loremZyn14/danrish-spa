@@ -4,9 +4,9 @@
       <v-col lg="5">
         <v-carousel hide-delimiter-background cycle height="400px">
           <v-carousel-item
-            v-for="(item,i) in items"
+            v-for="(image,i) in product.images"
             :key="i"
-            :src="item.src"
+            :src="image.image_url"
             reverse-transition="fade-transition"
             transition="fade-transition"
           ></v-carousel-item>
@@ -55,33 +55,14 @@
         </div>
       </v-col>
     </v-row>
-    <v-row fluid>
-      <v-col lg="6">
-        <v-sheet color="blue-grey lighten-5 text--secondary" class="pa-4" light>
-          <h3>Product Specification</h3>
-        </v-sheet>
-        <v-list>
-          <v-list-item v-for="i in 5" :key="i">
-            <v-list-item-title class="font-weight-thin">
-              Model :
-              <strong> Ram 16 GB</strong>
-            </v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-col>
+    <v-row fluid  v-if="product.description">
       <v-col lg="6">
         <v-sheet color="blue-grey lighten-5 text--secondary" class="pa-4" light>
           <h3>Product Description</h3>
         </v-sheet>
-        <v-list>
-          <v-list-item v-for="i in 5" :key="i">
-            <v-list-item-title>
-              Waranty :
-              <strong>7 Months</strong>
-            </v-list-item-title>
-          </v-list-item>
-        </v-list>
+        <div v-html="product.description"></div>
       </v-col>
+
     </v-row>
   </v-container>
 </template>
@@ -90,24 +71,6 @@ export default {
   data() {
     return {
       rating: 0,
-      items: [
-        {
-          src: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg",
-        },
-        {
-          src: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg",
-        },
-        {
-          src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg",
-        },
-        {
-          src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg",
-        },
-      ],
-      items2: [
-        { header: "Specifications", content: "lorem ipsiun" },
-        { header: "Description", content: "lorem inpum" },
-      ],
     };
   },
   methods: {

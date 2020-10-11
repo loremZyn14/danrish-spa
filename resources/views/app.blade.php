@@ -11,7 +11,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title','Danrish IT Solution : Complete IT Product and Services')</title>
-    <link rel="icon" type="image/png" sizes="16x16"href="{{ asset('assets/img/logo.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16"href="{{ asset('assets/img/logo_back_up.png') }}">
 
 
     <!-- Fonts -->

@@ -5,7 +5,7 @@
           :items="$store.getters.products"
           :search="search"
           sort-by="calories"
-          class="elevation-8 rounded"
+          class="elevation-8 rounded pt-4"
         >
           <template v-slot:top>
             <v-toolbar flat color="red--text" rounded>
@@ -84,17 +84,10 @@ export default {
   }),
   methods: {
 
-
-    editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
-    },
-
     deleteItem(item) {
-      const index = this.desserts.indexOf(item);
+      const index = this.$store.getters.products.indexOf(item);
       confirm("Are you sure you want to delete this item?") &&
-        this.desserts.splice(index, 1);
+        this.$store.getters.products.splice(index, 1);
     },
 
     close() {

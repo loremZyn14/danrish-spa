@@ -4,9 +4,9 @@
       <v-container fluid>
         <v-row style="height:700px" justify="center" align="center">
           <v-card>
-            <v-card-title class="text-h4 px-8 pt-16 pb-8">
+            <v-card-title class="text-h4 px-8 pt-8 pb-8 blue darken-4 white--text">
               <v-avatar size="64" left class="mr-4">
-                <img src="assets/img/logo.png" alt="alt" />
+                <img src="/assets/img/logo.png" alt="alt" />
               </v-avatar>
 Danrish IT Solution
             </v-card-title>
@@ -59,35 +59,6 @@ Danrish IT Solution
             </v-card-actions>
           </v-card>
 
-          <!-- <v-col lg="6" align="center"  >
-
-        </v-col>
-        <v-col lg="6" >
-            <v-card width="500px"  flat >
-                <v-card-text>
-                    <h3 class="text-h4 font-weight-bold">Login</h3>
-                </v-card-text>
-
-                <v-card-text >
-                    <v-form ref="loginForm" @submit.prevent="login()">
-                        <v-text-field  rounded outlined name="email" lazy-validation label="Email Addres" v-model="form.email" type="email" :error-messages="emailError"/>
-                        <v-text-field  rounded outlined name="password" label="Password" v-model="form.password" type="password" :error-messages="passwordError" />
-                        <v-alert type="error" v-show="authError" dismissible>
-                            {{ authError}}
-                        </v-alert>
-
-                        <v-card-actions>
-                            <v-btn x-large rounded color="primary" :loading="loading" type="submit" block>Login</v-btn>
-                        </v-card-actions>
-                    </v-form>
-                </v-card-text>
-                <v-card-actions>
-                    <v-card-title>Not yet a member?</v-card-title>
-                    <v-spacer></v-spacer>
-                    <v-btn color="primary" x-large text class="mr-4"  @click="registerFormDialog= true">Sign Up</v-btn>
-                </v-card-actions>
-            </v-card>
-          </v-col>-->
         </v-row>
         <v-dialog v-model="registerFormDialog" max-width="500px">
           <v-card>
